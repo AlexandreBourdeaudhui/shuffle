@@ -41,31 +41,31 @@ async function getMembers({ channel }) {
  * @return {String}
  */
 function formatMessage(items) {
-  return `Hej 👋 !\n\n${items.map((item) => '* ' + item + '\n').join('')}`;
+  return `Hej 👋 !\n\n${items.map((item) => `* ${item}\n`).join('')}`;
 }
 
 /**
  * Send to Slack
- * @param {Array} items 
+ * @param {Array} items
  * @return {Object}
  */
 function setSlackResponse(items, statusCode = 200) {
   return {
-    statusCode: statusCode,
-    headers: { "Content-Type": "application/json" },
+    statusCode,
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      response_type: "in_channel",
-      text: formatMessage(items)
-    })
+      response_type: 'in_channel',
+      text: formatMessage(items),
+    }),
   };
 }
 
 /**
  * Serverless function handler
- * 
+ *
  * It is launched when the `/shuffle` command is called on Slack
  * @doc https://api.slack.com/interactivity/slash-commands#getting_started
- * 
+ *
  * @param {Object} event
  * @param {Object} context
  * @return
@@ -76,7 +76,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 401,
       body: JSON.stringify({ message: 'Unauthorized Request.' }),
-    }
+    };
   }
 
   // Not Found.
@@ -87,7 +87,6 @@ exports.handler = async (event, context) => {
     };
   }
 
-  
   try {
     // Data
     const payload = queryString.parse(event.body);
@@ -105,7 +104,9 @@ exports.handler = async (event, context) => {
     }
 
     // By default, if we don't have text, get members from channel_id
-    const { data: { members } } = await getMembers({ channel: channel_id });
+    const {
+      data: { members },
+    } = await getMembers({ channel: channel_id });
     const itemsShuffled = shuffle(members);
     return setSlackResponse(itemsShuffled);
   }
