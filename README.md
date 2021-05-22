@@ -10,8 +10,19 @@ A serverless [Slack Slash Commands](https://api.slack.com/slash-commands) to shu
 
 ### Netlify
 
-@TODO
+To deploy the script on Netlify Functions :
+
+* `netlify build`
+* `netlify deploy`
+* {...} @ TODO
 
 ### Slack
 
-@TODO
+To install the Slack Slash Commands : 
+
+* Go to https://api.slack.com/apps/
+* Click on `Create New App`
+* Click on `From an app manifest
+* Select a workspace
+* Choose `JSON` tab, and copy/paste the data from `./manifest.json`
+* {...} @ TODO
