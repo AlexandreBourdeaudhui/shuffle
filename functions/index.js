@@ -41,7 +41,8 @@ async function getMembers({ channel }) {
  * @return {String}
  */
 function formatMessage(items) {
-  return `Hej 👋 !\n\n${items.map((item) => `* ${item}\n`).join('')}`;
+  return `Hej 👋 !\n\n${items.map((item) => `* ${item.startsWith('@') ? `<${item}>` : item
+    }\n`).join('')}`;
 }
 
 /**
@@ -105,7 +106,7 @@ exports.handler = async (event, context) => {
 
     // By default, if we don't have text, get members from channel_id
     const { data } = await getMembers({ channel: channel_id });
-    const members = (data && data.members.map((member) => `<@${member}>`)) || [];
+    const members = (data && data.members.map((member) => `@${member}`)) || [];
 
     const itemsShuffled = shuffle(members);
     return setSlackResponse(itemsShuffled);
