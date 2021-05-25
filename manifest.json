@@ -19,7 +19,7 @@
         "slash_commands": [
             {
                 "command": "/shuffle",
-                "url": "ENDPOINT_URL",
+                "url": "https://keen-noyce-32acb6.netlify.app/.netlify/functions/index",
                 "usage_hint": "<list>",
                 "description": "Randomly shuffle a list of items",
                 "should_escape": false

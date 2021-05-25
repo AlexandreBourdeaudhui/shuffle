@@ -41,8 +41,9 @@ async function getMembers({ channel }) {
  * @return {String}
  */
 function formatMessage(items) {
-  return `Hej 👋 !\n\n${items.map((item) => `* ${item.startsWith('@') ? `<${item}>` : item
-    }\n`).join('')}`;
+  return `Hej 👋 !\n\n${items
+    .map((item) => `* ${item.startsWith('@') ? `<${item}>` : item}\n`)
+    .join('')}`;
 }
 
 /**
