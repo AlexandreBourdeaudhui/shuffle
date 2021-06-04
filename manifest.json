@@ -31,7 +31,9 @@
             "bot": [
                 "commands",
                 "channels:read",
-                "groups:read"
+                "groups:read",
+                "im:read",
+                "mpim:read"
             ]
         }
     },
