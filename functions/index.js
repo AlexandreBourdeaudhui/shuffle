@@ -112,12 +112,9 @@ exports.handler = async (event, context) => {
 
     // Filter members
     const membersToFilter = process.env.MEMBERS_TO_FILTER || [];
-    console.log({ membersToFilter });
-
     const membersFiltered = members.filter(
       (member) => membersToFilter.indexOf(member) === -1,
     );
-    console.log({ membersFiltered });
 
     // Shuffle
     const itemsShuffled = shuffle(membersFiltered);
