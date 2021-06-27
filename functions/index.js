@@ -107,9 +107,6 @@ exports.handler = async (event, context) => {
 
     // By default, if we don't have text, get members from channel_id
     const { data } = await getMembers({ channel: channel_id });
-    console.log({ data });
-    console.log({ data2: JSON.stringify(data) });
-
     const members = (data && data.members.map((member) => `@${member}`)) || [];
 
     // Filter members
