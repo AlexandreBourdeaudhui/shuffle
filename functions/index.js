@@ -108,12 +108,16 @@ exports.handler = async (event, context) => {
     // By default, if we don't have text, get members from channel_id
     const { data } = await getMembers({ channel: channel_id });
     const members = (data && data.members.map((member) => `@${member}`)) || [];
+    console.log({ members });
 
     // Filter members
     const membersToFilter = process.env.MEMBERS_TO_FILTER || [];
+    console.log({ membersToFilter });
+
     const membersFiltered = members.filter(
       (member) => membersToFilter.indexOf(member) === -1,
     );
+    console.log({ membersFiltered });
 
     // Shuffle
     const itemsShuffled = shuffle(membersFiltered);
