@@ -16,6 +16,7 @@ A serverless [Slack Slash Commands](https://api.slack.com/slash-commands) to shu
 - `$ netlify init` and follow instructions
 - `$ netlify dev --live`
 - Follow the Slack steps below
+- Create an `.env` file and fill it with the properties of the `.env.example` file.
 
 #### ⚡️ Build
 
@@ -34,3 +35,4 @@ To install the Slack Slash Commands :
 - Click on `From an app manifest, and select your workspace
 - Choose `JSON` tab, and copy/paste the data from `./manifest.json`
 - Get URL from Netlify (dev/prod) and replace URL in `Slash Commands` and `Interactivity & Shortcuts`
+- Click on `OAuth & Permissions`, view and copy the token (`xoxb-XXXX`) to a temporary place. You'll need it later.
