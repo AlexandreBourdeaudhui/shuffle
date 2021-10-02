@@ -1,45 +1,46 @@
 {
-    "_metadata": {
-        "major_version": 1,
-        "minor_version": 1
+  "_metadata": {
+    "major_version": 1,
+    "minor_version": 1
+  },
+  "display_information": {
+    "name": "Shuffle",
+    "description": "Randomly shuffle a list of items",
+    "background_color": "#590088"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "Shuffle",
+      "always_online": false
     },
-    "display_information": {
-        "name": "Shuffle"
-    },
-    "features": {
-        "app_home": {
-            "home_tab_enabled": false,
-            "messages_tab_enabled": true,
-            "messages_tab_read_only_enabled": true
-        },
-        "bot_user": {
-            "display_name": "Shuffle",
-            "always_online": false
-        },
-        "slash_commands": [
-            {
-                "command": "/shuffle",
-                "url": "https://keen-noyce-32acb6.netlify.app/.netlify/functions/index",
-                "usage_hint": "<list>",
-                "description": "Randomly shuffle a list of items",
-                "should_escape": false
-            }
-        ]
-    },
-    "oauth_config": {
-        "scopes": {
-            "bot": [
-                "commands",
-                "channels:read",
-                "groups:read",
-                "im:read",
-                "mpim:read"
-            ]
-        }
-    },
-    "settings": {
-        "org_deploy_enabled": false,
-        "socket_mode_enabled": false,
-        "is_hosted": false
+    "slash_commands": [
+      {
+        "command": "/shuffle",
+        "url": "https://{{NETLIFY_URL}}/.netlify/functions/index",
+        "description": "Randomly shuffle a list of items",
+        "should_escape": false
+      }
+    ]
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": [
+        "channels:read",
+        "chat:write",
+        "commands",
+        "groups:read",
+        "im:read",
+        "mpim:read"
+      ]
     }
+  },
+  "settings": {
+    "interactivity": {
+      "is_enabled": true,
+      "request_url": "https://{{NETLIFY_URL}}/.netlify/functions/events"
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": false,
+    "token_rotation_enabled": false
+  }
 }
