@@ -1,27 +1,17 @@
 /**
- * Package Import
- */
-const queryString = require('querystring');
-
-/**
  * Local Import
  */
 const { BLOCKS, EVENTS } = require('../constants');
 
 // Helpers
-const { formatMessage, shuffle } = require('../utils');
 const { postMessage } = require('../utils/slack');
+const { formatMessage, parseRequestBody, shuffle } = require('../utils');
 
 /**
  * Serverless function handler
  * It is launched when an event is dispatch on Slack
- *
- * @param {Object} event
- * @param {Object} context
- * @param {Function} callback
- *
  */
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event) => {
   // Unauthorized Request.
   if (!process.env.TOKEN_SLACK) {
     return {
@@ -40,8 +30,7 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Data
-    const body = queryString.parse(event.body);
-    const payload = JSON.parse(body.payload);
+    const payload = parseRequestBody(event.body)
     // console.log({ payload });
 
     //
@@ -61,11 +50,11 @@ exports.handler = async (event, context, callback) => {
         text: formatMessage(itemsShuffled),
       });
 
-      return callback(null, {
+      return {
         statusCode: 200,
         headers: { 'Content-Type': 'application/json' },
-        body: null,
-      });
+        body: '',
+      };
     }
 
     //
@@ -82,19 +71,19 @@ exports.handler = async (event, context, callback) => {
     //     const items = trimmedMessage.split(' ').filter(Boolean);
     //     const itemsShuffled = shuffle(items);
         
-    //     return callback(null, {
+    //     return {
     //       statusCode: 200,
     //       headers: { 'Content-Type': 'application/json' },
-    //       body: null,
-    //     });
+    //       body: '',
+    //     };
     //   }
     // }
 
-    return callback(null, {
+    return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: null,
-    });
+      body: '',
+    };
   } catch (error) {
     console.log({ error });
 

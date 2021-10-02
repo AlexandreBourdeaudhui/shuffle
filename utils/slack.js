@@ -49,7 +49,7 @@ async function getMembers({ channel }) {
  * @param {Object} view
  * @return {Promise}
  */
-async function displayModal({ trigger_id, view }) {
+async function openViewModal({ trigger_id, view }) {
   return api('views.open', {
     trigger_id,
     view,
@@ -60,7 +60,7 @@ async function displayModal({ trigger_id, view }) {
  * Export
  */
 module.exports = {
-  postMessage,
   getMembers,
-  displayModal,
+  openViewModal,
+  postMessage,
 };

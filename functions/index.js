@@ -1,27 +1,18 @@
 /**
- * Package Import
- */
-const queryString = require('querystring');
-
-/**
  * Local Import
  */
 const { getView } = require('../data');
-const { displayModal, getMembers } = require('../utils/slack');
+const { parseRequestBody } = require('../utils');
+const { openViewModal, getMembers } = require('../utils/slack');
 
 /**
  * Serverless function handler
  * It is launched when the `/shuffle` command is called on Slack
- * 
- * @doc https://api.slack.com/interactivity/slash-commands#getting_started
+ *
  * @doc https://api.slack.com/surfaces/modals/using
- *
- * @param {Object} event
- * @param {Object} context
- * @param {Function} callback
- *
+ * @doc https://api.slack.com/interactivity/slash-commands#getting_started
  */
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event) => {
   // Unauthorized Request.
   if (!process.env.TOKEN_SLACK) {
     return {
@@ -40,7 +31,7 @@ exports.handler = async (event, context, callback) => {
 
   try {
     // Data
-    const payload = queryString.parse(event.body);
+    const payload = parseRequestBody(event.body);
     const { channel_id, trigger_id } = payload;
 
     // By default, if we don't have text, get members from channel_id
@@ -54,19 +45,16 @@ exports.handler = async (event, context, callback) => {
     );
 
     // Open Slack Modal
-    await displayModal({
+    await openViewModal({
       trigger_id,
-      view: getView({
-        channel_id,
-        initial_users: membersFiltered,
-      }),
+      view: getView({ channel_id, initial_users: membersFiltered }),
     });
 
-    return callback(null, {
+    return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: null,
-    });
+      body: '',
+    };
   } catch (error) {
     console.log({ error });
 

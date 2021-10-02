@@ -1,12 +1,15 @@
 /**
+ * Package Import
+ */
+const queryString = require('querystring');
+
+/**
  * Format the message to send on Slack
  * @param {Array} items
  * @return {String}
  */
 function formatMessage(items) {
-  return `New list : \n\n${items
-    .map((item) => `* ${item}\n`)
-    .join('')}`;
+  return `New list : \n\n${items.map((item) => `* ${item}\n`).join('')}`;
 }
 
 /**
@@ -24,9 +27,25 @@ function shuffle(items) {
 }
 
 /**
+ * Parse the request body
+ * @param {String} body
+ * @return {Object}
+ */
+function parseRequestBody(body) {
+  const parsedBody = queryString.parse(body);
+
+  if (typeof parsedBody.payload === 'string') {
+    return JSON.parse(parsedBody.payload);
+  }
+
+  return parsedBody;
+}
+
+/**
  * Export
  */
 module.exports = {
   formatMessage,
+  parseRequestBody,
   shuffle,
 };
