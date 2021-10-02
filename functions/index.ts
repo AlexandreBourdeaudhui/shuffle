@@ -1,9 +1,14 @@
 /**
+ * Package Import
+ */
+import { Handler } from '@netlify/functions';
+
+/**
  * Local Import
  */
-const { getView } = require('../data');
-const { parseRequestBody } = require('../utils');
-const { openViewModal, getMembers } = require('../utils/slack');
+import { getView } from '../data';
+import { parseRequestBody } from '../utils';
+import { openViewModal, getMembers } from '../utils/slack';
 
 /**
  * Serverless function handler
@@ -12,7 +17,7 @@ const { openViewModal, getMembers } = require('../utils/slack');
  * @doc https://api.slack.com/surfaces/modals/using
  * @doc https://api.slack.com/interactivity/slash-commands#getting_started
  */
-exports.handler = async (event) => {
+export const handler: Handler = async (event) => {
   // Unauthorized Request.
   if (!process.env.TOKEN_SLACK) {
     return {

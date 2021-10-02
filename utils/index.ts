@@ -1,37 +1,30 @@
 /**
  * Package Import
  */
-const queryString = require('querystring');
+import queryString from 'querystring';
 
 /**
  * Format the message to send on Slack
- * @param {Array} items
- * @return {String}
  */
-function formatMessage(items) {
-  return `New list : \n\n${items.map((item) => `* ${item}\n`).join('')}`;
-}
+export const formatMessage = (items: string[]): string =>
+  `New list : \n\n${items.map((item) => `* ${item}\n`).join('')}`;
 
 /**
  * Shuffle array with the `Fisher–Yates` algorithm
- * @param {Array} items
- * @return {Array}
  */
-function shuffle(items) {
+export const shuffle = (items: string[]): string[] => {
   for (let index = items.length - 1; index > 0; index--) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
     [items[index], items[randomIndex]] = [items[randomIndex], items[index]];
   }
 
   return items;
-}
+};
 
 /**
  * Parse the request body
- * @param {String} body
- * @return {Object}
  */
-function parseRequestBody(body) {
+export const parseRequestBody = (body: string) => {
   const parsedBody = queryString.parse(body);
 
   if (typeof parsedBody.payload === 'string') {
@@ -39,13 +32,4 @@ function parseRequestBody(body) {
   }
 
   return parsedBody;
-}
-
-/**
- * Export
- */
-module.exports = {
-  formatMessage,
-  parseRequestBody,
-  shuffle,
 };

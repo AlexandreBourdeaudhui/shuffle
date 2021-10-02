@@ -1,17 +1,22 @@
 /**
+ * Package Import
+ */
+import { Handler } from '@netlify/functions';
+
+/**
  * Local Import
  */
-const { BLOCKS, EVENTS } = require('../constants');
+import { BLOCKS, EVENTS } from '../constants';
 
 // Helpers
-const { postMessage } = require('../utils/slack');
-const { formatMessage, parseRequestBody, shuffle } = require('../utils');
+import { postMessage } from '../utils/slack';
+import { formatMessage, parseRequestBody, shuffle } from '../utils';
 
 /**
  * Serverless function handler
  * It is launched when an event is dispatch on Slack
  */
-exports.handler = async (event) => {
+export const handler: Handler = async (event) => {
   // Unauthorized Request.
   if (!process.env.TOKEN_SLACK) {
     return {
@@ -30,7 +35,7 @@ exports.handler = async (event) => {
 
   try {
     // Data
-    const payload = parseRequestBody(event.body)
+    const payload = parseRequestBody(event.body);
     // console.log({ payload });
 
     //
@@ -41,14 +46,16 @@ exports.handler = async (event) => {
       const values = payload.view.state.values[BLOCKS.BLOCK_ID];
       const users = values[BLOCKS.INPUT_USERS_ID].selected_users || [];
 
-      // Shuffle items
-      const formatUsers = users.map((user) => `<@${user}>`);
-      const itemsShuffled = shuffle(formatUsers);
+      if (users.length > 0) {
+        // Shuffle items
+        const formatUsers = users.map((user) => `<@${user}>`);
+        const itemsShuffled = shuffle(formatUsers);
 
-      await postMessage({
-        channel: payload.view.private_metadata,
-        text: formatMessage(itemsShuffled),
-      });
+        await postMessage({
+          channel: payload.view.private_metadata,
+          text: formatMessage(itemsShuffled),
+        });
+      }
 
       return {
         statusCode: 200,
@@ -70,7 +77,7 @@ exports.handler = async (event) => {
     //     // If we have text, let's go to shuffle the elements
     //     const items = trimmedMessage.split(' ').filter(Boolean);
     //     const itemsShuffled = shuffle(items);
-        
+
     //     return {
     //       statusCode: 200,
     //       headers: { 'Content-Type': 'application/json' },
