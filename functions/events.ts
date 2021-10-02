@@ -43,14 +43,15 @@ export const handler: Handler = async (event) => {
       payload.type === EVENTS.VIEW_SUBMISSION &&
       payload.view.callback_id === BLOCKS.CALLBACK_ID
     ) {
-      const values = payload.view.state.values[BLOCKS.BLOCK_ID];
-      const users = values[BLOCKS.INPUT_USERS_ID].selected_users || [];
+      const { values } = payload.view.state;
+      const { selected_users } = values[BLOCKS.BLOCK_ID][BLOCKS.INPUT_USERS_ID];
 
-      if (users.length > 0) {
+      if (Array.isArray(selected_users) && selected_users.length > 0) {
         // Shuffle items
-        const formatUsers = users.map((user) => `<@${user}>`);
+        const formatUsers = selected_users.map((user) => `<@${user}>`);
         const itemsShuffled = shuffle(formatUsers);
 
+        // Send the shuffle items on Slack
         await postMessage({
           channel: payload.view.private_metadata,
           text: formatMessage(itemsShuffled),

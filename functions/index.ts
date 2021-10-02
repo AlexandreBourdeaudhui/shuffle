@@ -39,7 +39,7 @@ export const handler: Handler = async (event) => {
     const payload = parseRequestBody(event.body);
     const { channel_id, trigger_id } = payload;
 
-    // By default, if we don't have text, get members from channel_id
+    // By default, get members from channel_id
     const { data } = await getMembers({ channel: channel_id });
     const members = (data && data.members.map((member) => member)) || [];
 
