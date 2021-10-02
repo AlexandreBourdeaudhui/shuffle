@@ -2,20 +2,16 @@
  * Local Import
  */
 import { BLOCKS } from '../constants';
-
-/**
- * Types
- */
-interface ViewParams {
-  channel_id: string;
-  initial_users: string[];
-}
+import { IViewBlocks, IGetViewParams } from '../types';
 
 /**
  * Get view modal
  * @doc https://api.slack.com/reference/surfaces/views
  */
-export const getView = ({ channel_id, initial_users = [] }: ViewParams) => ({
+export const getView = ({
+  channel_id,
+  initial_users = [],
+}: IGetViewParams): IViewBlocks => ({
   type: 'modal',
   title: {
     type: 'plain_text',
