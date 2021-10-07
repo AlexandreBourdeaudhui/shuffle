@@ -6,8 +6,18 @@ import queryString from 'querystring';
 /**
  * Format the message to send on Slack
  */
-export const formatMessage = (items: string[]): string =>
-  `New list : \n\n${items.map((item) => `* ${item}\n`).join('')}`;
+export const formatMessage = (
+  items: string[],
+  options: { onlyChecked?: boolean },
+): string => {
+  if (options.onlyChecked) {
+    return `:drum_with_drumsticks: Item that was drawn is :\n${items[0]}`;
+  }
+
+  return `The new list : \n\n${items
+    .map((item, index) => `${index + 1}. ${item}\n`)
+    .join('')}`;
+};
 
 /**
  * Shuffle array with the `Fisher–Yates` algorithm

@@ -6,7 +6,7 @@ import { Handler } from '@netlify/functions';
 /**
  * Local Import
  */
-import { BLOCKS, EVENTS } from '../constants';
+import { ACTIONS, BLOCKS, EVENTS, OPTIONS_VALUES } from '../constants';
 
 // Helpers
 import { postMessage } from '../utils/slack';
@@ -44,48 +44,27 @@ export const handler: Handler = async (event) => {
       payload.view.callback_id === BLOCKS.CALLBACK_ID
     ) {
       const { values } = payload.view.state;
-      const { selected_users } = values[BLOCKS.BLOCK_ID][BLOCKS.INPUT_USERS_ID];
+      const { selected_users } = values[BLOCKS.USERS][ACTIONS.USERS_ID];
+      const { selected_options } = values[BLOCKS.OPTIONS][ACTIONS.OPTIONS_ID];
 
       if (Array.isArray(selected_users) && selected_users.length > 0) {
         // Shuffle items
-        const formatUsers = selected_users.map((user) => `<@${user}>`);
-        const itemsShuffled = shuffle(formatUsers);
+        const formatItems = selected_users.map((user) => `<@${user}>`);
+        const itemsShuffled = shuffle(formatItems);
 
-        // Send the shuffle items on Slack
+        // Options
+        const onlyChecked = selected_options.some(
+          ({ value }: { value: OPTIONS_VALUES }) =>
+            value === OPTIONS_VALUES.UNIQUE_CHECKED,
+        );
+
+        // Send the shuffle items
         await postMessage({
           channel: payload.view.private_metadata,
-          text: formatMessage(itemsShuffled),
+          text: formatMessage(itemsShuffled, { onlyChecked }),
         });
       }
-
-      return {
-        statusCode: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: '',
-      };
     }
-
-    //
-    // if (
-    //   payload.type === EVENTS.ACTIONS_BLOCK &&
-    //   payload.view.callback_id === BLOCKS.CALLBACK_ID
-    // ) {
-    //   //
-    //   const trimmedMessage = text.trim();
-    //   const isEmpty = trimmedMessage === '';
-
-    //   if (!isEmpty) {
-    //     // If we have text, let's go to shuffle the elements
-    //     const items = trimmedMessage.split(' ').filter(Boolean);
-    //     const itemsShuffled = shuffle(items);
-
-    //     return {
-    //       statusCode: 200,
-    //       headers: { 'Content-Type': 'application/json' },
-    //       body: '',
-    //     };
-    //   }
-    // }
 
     return {
       statusCode: 200,

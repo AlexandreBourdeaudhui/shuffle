@@ -1,7 +1,7 @@
 /**
  * Local Import
  */
-import { BLOCKS } from '../constants';
+import { ACTIONS, BLOCKS, OPTIONS_VALUES } from '../constants';
 import { IViewBlocks, IGetViewParams } from '../types';
 
 /**
@@ -15,12 +15,13 @@ export const getView = ({
   type: 'modal',
   title: {
     type: 'plain_text',
-    text: 'Shuffle your items',
+    text: 'Shuffle — :game_die:',
+    emoji: true,
   },
   blocks: [
     {
       type: 'section',
-      block_id: BLOCKS.BLOCK_ID,
+      block_id: BLOCKS.USERS,
       text: {
         type: 'mrkdwn',
         text: 'Pick users from the list',
@@ -28,12 +29,37 @@ export const getView = ({
       /** @doc https://api.slack.com/reference/block-kit/block-elements#users_multi_select */
       accessory: {
         type: 'multi_users_select',
-        action_id: BLOCKS.INPUT_USERS_ID,
+        action_id: ACTIONS.USERS_ID,
         placeholder: {
           type: 'plain_text',
           text: 'Select users',
         },
         initial_users,
+      },
+    },
+    {
+      type: 'section',
+      block_id: BLOCKS.OPTIONS,
+      text: {
+        type: 'mrkdwn',
+        text: '*Options*',
+      },
+      accessory: {
+        type: 'checkboxes',
+        action_id: ACTIONS.OPTIONS_ID,
+        options: [
+          {
+            text: {
+              type: 'mrkdwn',
+              text: '*Unique*',
+            },
+            description: {
+              type: 'mrkdwn',
+              text: 'Choisir une personne au hasard parmis tous les membres de la liste',
+            },
+            value: OPTIONS_VALUES.UNIQUE_CHECKED,
+          },
+        ],
       },
     },
   ],
@@ -43,7 +69,7 @@ export const getView = ({
   },
   submit: {
     type: 'plain_text',
-    text: 'Go',
+    text: 'Submit',
   },
   callback_id: BLOCKS.CALLBACK_ID,
   private_metadata: channel_id,
