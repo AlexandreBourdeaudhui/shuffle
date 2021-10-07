@@ -55,7 +55,7 @@ export const getView = ({
             },
             description: {
               type: 'mrkdwn',
-              text: 'Choisir une personne au hasard parmis tous les membres de la liste',
+              text: 'The bot will choose an item at random among all the items in the list',
             },
             value: OPTIONS_VALUES.UNIQUE_CHECKED,
           },
